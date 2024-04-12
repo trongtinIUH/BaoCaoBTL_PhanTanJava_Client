@@ -1,5 +1,13 @@
 package gui;
 
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -8,6 +16,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.rmi.Naming;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -15,23 +24,20 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Desktop;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -40,9 +46,6 @@ import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import app.DataManager;
-import app.Dialog_TraSanPham;
-import app.RoundedBorder;
 import dao.ChiTietDichVu_dao;
 import dao.ChiTietHoaDon_dao;
 import dao.HoaDonDatPhong_dao;
@@ -68,14 +71,6 @@ import entity.Phong;
 import entity.SanPham;
 import utils.TempPhongBiChuyen;
 import utils.TempThanhToan;
-
-import java.awt.Dimension;
-import java.awt.Window;
-
-import javax.swing.JCheckBox;
-import javax.swing.JTextField;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 
 public class Dialog_ThanhToan extends JDialog implements ActionListener {
 	/**
@@ -113,17 +108,17 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 	private final JLabel lblVn_2;
 	private final JButton btnThanhToan;
 	private final JButton btnQuayLai;
-	private final NhanVien_dao nv_dao;
-	private final ChiTietHoaDon_dao cthd_dao;
-	private final HoaDonDatPhong_dao hd_dao;
-	private final KhachHang_dao kh_dao;
+	private  NhanVien_dao nv_dao;
+	private  ChiTietHoaDon_dao cthd_dao;
+	private  HoaDonDatPhong_dao hd_dao;
+	private  KhachHang_dao kh_dao;
 	private final JLabel lblMaHD;
 	private final JLabel lbl_MaHoaDon_1;
 	private final Date ngayTraPhong;
-	private final Phong_dao ph_dao;
-	private final LoaiPhong_dao loaiPhong_dao;
-	private final ChiTietDichVu_dao ctdv_dao;
-	private final SanPham_dao sp_dao;
+	private  Phong_dao ph_dao;
+	private  LoaiPhong_dao loaiPhong_dao;
+	private  ChiTietDichVu_dao ctdv_dao;
+	private  SanPham_dao sp_dao;
 	private int tongTienDichVu;
 	private double tongTienPhong;
 	private final JCheckBox chckbx_XuatHoaDon;
@@ -136,7 +131,7 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 	private double tongSoPhutHat;
 	private double soGioHat_Item;
 	private double soPhutHat_Item;
-	private final KhuyenMai_dao km_dao;
+	private  KhuyenMai_dao km_dao;
 	private final JButton btnKiemTra;
 	private int xacNhan;
 	private final JTextField txtPhanTramKM;
@@ -145,19 +140,35 @@ public class Dialog_ThanhToan extends JDialog implements ActionListener {
 	private final JButton btnTraLaiSP;
 	private int TienDichVu_item;
 	private double tienDichVu_update;
-	PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
-	private final TempThanhToan_dao tempTT_dao;
+	private PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
+	private  TempThanhToan_dao tempTT_dao;
 	private int gioThua_Item;
 	private double phutChinhXac_Item;
 	private final Date date;
 	private double thoiGianHat;
 	private double thoiGian_Item;
-	private final TempPhongBiChuyen_dao temChuyen_dao;
+	private  TempPhongBiChuyen_dao temChuyen_dao;
 	@SuppressWarnings("unused")
 	private final String maPh;
 	private final JTextField txtTienGiam;
 
 	public Dialog_ThanhToan(String maPhong) {
+		try {
+			 //  ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			cthd_dao = (ChiTietHoaDon_dao) Naming.lookup("rmi://192.168.0.107:7878/chitiethoadon");
+			kh_dao = (KhachHang_dao) Naming.lookup("rmi://192.168.0.107:7878/khachhang");
+			tempTT_dao = (TempThanhToan_dao) Naming.lookup("rmi://192.168.0.107:7878/tempthanhtoan");
+			ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			loaiPhong_dao = (LoaiPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/loaiphong");
+			ctdv_dao = (ChiTietDichVu_dao) Naming.lookup("rmi://192.168.0.107:7878/chitietdichvu");
+			hd_dao = (HoaDonDatPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/hoadondatphong");
+			nv_dao = (NhanVien_dao) Naming.lookup("rmi://192.168.0.107:7878/nhanvien");
+			km_dao = (KhuyenMai_dao) Naming.lookup("rmi://192.168.0.107:7878/khuyenmai");
+			temChuyen_dao = (TempPhongBiChuyen_dao) Naming.lookup("rmi://192.168.0.107:7878/tempphongbichuyen");
+			sp_dao = (SanPham_dao) Naming.lookup("rmi://192.168.0.107:7878/sanpham");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		this.maPh = maPhong;
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(null);

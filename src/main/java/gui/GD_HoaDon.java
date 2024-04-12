@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.rmi.Naming;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -41,15 +42,18 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 
-import app.Dialog_User;
-import app.RoundedBorder;
+
 import dao.ChiTietDichVu_dao;
 import dao.ChiTietHoaDon_dao;
 import dao.HoaDonDatPhong_dao;
 import dao.KhachHang_dao;
 import dao.KhuyenMai_dao;
+import dao.LoaiPhong_dao;
+import dao.PhieuDatPhong_dao;
 import dao.Phong_dao;
 import dao.SanPham_dao;
+import dao.TempDatPhong_dao;
+import dao.TempThanhToan_dao;
 import entity.ChiTietDichVu;
 import entity.ChiTietHoaDon;
 import entity.HoaDonDatPhong;
@@ -95,13 +99,13 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
     private final JTextField txtKhuyenMai;
     private final JTextField txtTongTien;
     private final JTextField txtTimKiem;
-	private final HoaDonDatPhong_dao hoadon_dao;
-	private final KhachHang_dao khachhang_dao;
-	private final Phong_dao phong_dao;
-	private final ChiTietDichVu_dao chitietdichvu_dao;
-	private final KhuyenMai_dao khuyenmai_dao;
-	private final ChiTietHoaDon_dao chitiethoadon_dao;
-	private final SanPham_dao sanpham_dao;
+	private  HoaDonDatPhong_dao hoadon_dao;
+	private  KhachHang_dao khachhang_dao;
+	private  Phong_dao phong_dao;
+	private  ChiTietDichVu_dao chitietdichvu_dao;
+	private  KhuyenMai_dao khuyenmai_dao;
+	private  ChiTietHoaDon_dao chitiethoadon_dao;
+	private  SanPham_dao sanpham_dao;
 	private XSSFWorkbook wordbook;
 	private final DecimalFormat df;
 	private final Dialog_User dialog_user = new Dialog_User();
@@ -111,14 +115,28 @@ public class GD_HoaDon extends JPanel implements ActionListener, MouseListener {
 	private final DatePickerSettings dateSettings;
 
 	public GD_HoaDon() {
+		try {
+			 //  ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			hoadon_dao= (HoaDonDatPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/hoadon");
+			khachhang_dao = (KhachHang_dao) Naming.lookup("rmi://192.168.0.107:7878/khachhang");
+			phong_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			chitietdichvu_dao = (ChiTietDichVu_dao) Naming.lookup("rmi://192.168.0.107:7878/ctdv");
+			khuyenmai_dao = (KhuyenMai_dao) Naming.lookup("rmi://192.168.0.107:7878/khuyenmai");
+			chitiethoadon_dao = (ChiTietHoaDon_dao) Naming.lookup("rmi://192.168.0.107:7878/chitiethoadon");
+			sanpham_dao = (SanPham_dao) Naming.lookup("rmi://192.168.0.107:7878/sanpham");
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		df = new DecimalFormat("#,###,### VNĐ");
-		hoadon_dao = new HoaDonDatPhong_dao();
-		khachhang_dao = new KhachHang_dao();
-		phong_dao = new Phong_dao();
-		chitietdichvu_dao = new ChiTietDichVu_dao();
-		khuyenmai_dao = new KhuyenMai_dao();
-		chitiethoadon_dao = new ChiTietHoaDon_dao();
-		sanpham_dao = new SanPham_dao();
+		//hoadon_dao = new HoaDonDatPhong_dao();
+		//khachhang_dao = new KhachHang_dao();
+		//phong_dao = new Phong_dao();
+		//chitietdichvu_dao = new ChiTietDichVu_dao();
+		//khuyenmai_dao = new KhuyenMai_dao();
+		//chitiethoadon_dao = new ChiTietHoaDon_dao();
+		//sanpham_dao = new SanPham_dao();
 		setBackground(Color.decode("#FAFAFF"));
 		setLayout(null);
 //		Styling header

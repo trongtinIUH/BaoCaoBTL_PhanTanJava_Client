@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.rmi.Naming;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -41,9 +42,9 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.SqlDateModel;
 
-import app.Dialog_User;
-import app.RoundedBorder;
+
 import dao.DangNhap_dao;
+import dao.KhachHang_dao;
 import dao.NhanVien_dao;
 import entity.NhanVien;
 import entity.TaiKhoan;
@@ -79,7 +80,7 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 	private final JTable table;
 	private final JScrollPane scroll;
 	private NhanVien_dao nv_dao;
-	private final DangNhap_dao dangNhap_dao = new DangNhap_dao();
+	private  DangNhap_dao dangNhap_dao = new DangNhap_dao();
 	private final JTextField txtMa;
 	private final JTextField txtHoTen;
 	private final JTextField txtSDT;
@@ -95,6 +96,14 @@ public class GD_NhanVien extends JPanel implements ActionListener, MouseListener
 	private final Dialog_User dialog_user = new Dialog_User();
 
 	public GD_NhanVien() {
+		try {
+			 //  ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+		nv_dao = (NhanVien_dao) Naming.lookup("rmi://192.168.0.107:7878/nv");
+		dangNhap_dao = (DangNhap_dao) Naming.lookup("rmi://192.168.0.107:7878/dangnhap");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		setBackground(new Color(246, 245, 255));
 		setLayout(null);
 

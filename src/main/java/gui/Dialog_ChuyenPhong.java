@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.rmi.Naming;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -29,7 +30,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
-import app.DataManager;
 import dao.ChiTietDichVu_dao;
 import dao.ChiTietHoaDon_dao;
 import dao.HoaDonDatPhong_dao;
@@ -69,8 +69,8 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 	private final JTable tblChuyenPhong;
 	private final DefaultTableModel model;
 	private final String[] col = { "Mã Phòng", "Loại Phòng", "Sức Chứa", "Đơn Giá", "Trạng Thái" };
-	private final Phong_dao ph_dao;
-	private final LoaiPhong_dao loaiPhong_dao;
+	private  Phong_dao ph_dao;
+	private  LoaiPhong_dao loaiPhong_dao;
 	private final JLabel lblPhongHienTai_1_1;
 	private final JPanel panel_1;
 	private final JLabel lblPhongHT;
@@ -84,23 +84,23 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 	private Date tgHT;
 	private double soGioHat;
 	private double soPhutHat;
-	private final ChiTietHoaDon_dao cthd_dao;
-	private final PhieuDatPhong_dao pdp_dao;
+	private  ChiTietHoaDon_dao cthd_dao;
+	private  PhieuDatPhong_dao pdp_dao;
 	private Date ngayHienTai;
 	private Date date;
 	private final JLabel lblMaNV;
 	private final JTextField txtMaNV;
 	private final JLabel lblMaKH;
 	private final JTextField txtMaKH;
-	private final NhanVien_dao nv_dao;
-	private final HoaDonDatPhong_dao hd_dao;
-	private final KhachHang_dao kh_dao;
+	private  NhanVien_dao nv_dao;
+	private  HoaDonDatPhong_dao hd_dao;
+	private  KhachHang_dao kh_dao;
 	private LocalDateTime ngayGioDatPhong;
 	private LocalDateTime ngay_GioNhanPhong;
 	private String loaiPhong;
 	private final JLabel lblPhongHienTai_1;
-	private final TempPhongBiChuyen_dao tempChuyen_dao;
-	private final ChiTietDichVu_dao ctdv_dao;
+	private  TempPhongBiChuyen_dao tempChuyen_dao;
+	private  ChiTietDichVu_dao ctdv_dao;
 	public Dialog_ChuyenPhong(String maPhong, String soNguoi) {
 		getContentPane().setBackground(Color.WHITE);
 		setSize(800, 480);
@@ -108,16 +108,21 @@ public class Dialog_ChuyenPhong extends JDialog implements ActionListener, Mouse
 		getContentPane().setLayout(null);
 		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
 	    this.setIconImage(icon.getImage());
+	   
+	    try {
+            ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+            loaiPhong_dao = (LoaiPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/loaiphong");
+            cthd_dao = (ChiTietHoaDon_dao) Naming.lookup("rmi://192.168.0.107:7878/chitiethoadon");
+            pdp_dao = (PhieuDatPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/phieudatphong");
+            nv_dao = (NhanVien_dao) Naming.lookup("rmi://192.168.0.107:7878/nhanvien");
+            hd_dao = (HoaDonDatPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/hoadondatphong");
+            kh_dao = (KhachHang_dao) Naming.lookup("rmi://192.168.0.107:7878/khachhang");
+            tempChuyen_dao = (TempPhongBiChuyen_dao) Naming.lookup("rmi://192.168.0.107:7878/tempchuyen");
+            ctdv_dao = (ChiTietDichVu_dao) Naming.lookup("rmi://192.168.0.107:7878/chitietdichvu");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 	    
-		ph_dao = new Phong_dao();
-		loaiPhong_dao = new LoaiPhong_dao();
-		cthd_dao = new ChiTietHoaDon_dao();
-		pdp_dao = new PhieuDatPhong_dao();
-		nv_dao = new NhanVien_dao();
-		hd_dao = new HoaDonDatPhong_dao();
-		kh_dao = new KhachHang_dao();
-		tempChuyen_dao = new TempPhongBiChuyen_dao();
-		ctdv_dao = new ChiTietDichVu_dao();
 		this.addWindowListener(new WindowAdapter() {
 			public void windowOpened(WindowEvent e) {
 				NhanVien nv = null;

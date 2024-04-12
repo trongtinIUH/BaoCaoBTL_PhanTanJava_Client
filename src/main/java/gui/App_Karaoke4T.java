@@ -1,18 +1,46 @@
 package gui;
 import javax.swing.*;
 
-import app.GD_TrangDangNhap;
-
 import java.awt.*;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
-public class App_Karaoke4T extends JFrame {
+public class App_Karaoke4T extends JFrame implements AppKaraoke_Remote {
 	
     private static final long serialVersionUID = 1L;
-    private final JLabel label;
-    private final JProgressBar progressBar;
+    private  JLabel label;
+    private  JProgressBar progressBar;
 
 	public App_Karaoke4T() {
-        // Tạo một cửa sổ mới
+		label = new JLabel();
+        progressBar = new JProgressBar();
+    }
+
+    public static void main(String[] args) {
+    	 try {
+             // Getting the registry
+             Registry registry = LocateRegistry.getRegistry(null);
+
+             // Looking up the registry for the remote object
+             AppKaraoke_Remote stub = (AppKaraoke_Remote) registry.lookup("App_Karaoke4T");
+
+             // Calling the remote method using the obtained object
+             stub.runApp();
+
+             System.out.println("Remote method invoked");
+
+             // Run the main method of App_Karaoke4T
+             App_Karaoke4T.main(args);
+         } catch (Exception e) {
+             System.err.println("Client exception: " + e.toString());
+             e.printStackTrace();
+         }
+    }
+
+	@Override
+	public void runApp() throws RemoteException {
+		 // Tạo một cửa sổ mới
         JWindow window = new JWindow();
         window.setLayout(new BorderLayout());
 
@@ -65,9 +93,5 @@ public class App_Karaoke4T extends JFrame {
         // Tạo cửa sổ chính của ứng dụng
         GD_TrangDangNhap trangDangNhap = new GD_TrangDangNhap();
 		trangDangNhap.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        new App_Karaoke4T();
-    }
+	}
 }

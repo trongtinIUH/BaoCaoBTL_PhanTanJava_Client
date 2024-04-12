@@ -38,8 +38,7 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.SqlDateModel;
 
-import app.Dialog_User;
-import app.RoundedBorder;
+
 import dao.KhuyenMai_dao;
 import entity.KhuyenMai;
 import utils.DateLabelFormatter;

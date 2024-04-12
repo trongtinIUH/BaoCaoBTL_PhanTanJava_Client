@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.Naming;
 import java.time.LocalDateTime;
 import java.util.Locale;
 
@@ -23,8 +24,6 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 
-import app.DataManager;
-import app.Dialog_ThemDichVu;
 import dao.Phong_dao;
 import entity.Phong;
 
@@ -71,6 +70,12 @@ public class Dialog_DatThemPhongTrong extends JDialog implements ActionListener{
 	private final JTextField txtHoten;
 	private Phong_dao phong_dao ;
 	public Dialog_DatThemPhongTrong(String hoten) {
+		try {
+			 //  ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			phong_dao=(Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		//màn hình******************************************************************************
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(null);

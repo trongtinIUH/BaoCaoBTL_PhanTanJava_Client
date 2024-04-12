@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.rmi.Naming;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -23,14 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
-import app.DataManager;
-import app.Dialog_ChuyenPhong;
-import app.Dialog_DatPhongTrong_2;
-import app.Dialog_ThanhToan;
-import app.Dialog_ThemDichVu;
-import app.GD_DatPhong;
-import app.GD_TrangChu;
-import app.RoundedBorder;
+
 import dao.ChiTietHoaDon_dao;
 import dao.HoaDonDatPhong_dao;
 import dao.KhachHang_dao;
@@ -77,33 +71,47 @@ public class Dialog_PhongDangSD extends JDialog implements ActionListener {
 	private Dialog_ChuyenPhong dialog_ChuyenPhong;
 	private Dialog_ThemDichVu dialog_ThemDichVu;
 	private Dialog_ThanhToan dialog_ThanhToan;
-	private final Phong_dao p_dao = new Phong_dao();
-	private final LoaiPhong_dao lp_dao = new LoaiPhong_dao();
+	private  Phong_dao p_dao = new Phong_dao();
+	private  LoaiPhong_dao lp_dao = new LoaiPhong_dao();
 	private Phong p;
 	private LoaiPhong lp;
-	private final PhieuDatPhong_dao phieuDatPhong_dao;
+	private  PhieuDatPhong_dao phieuDatPhong_dao;
 	@SuppressWarnings("unused")
 	private final PhieuDatPhong_dao phieuDatPhong_dao_1= new PhieuDatPhong_dao();
-	private final ChiTietHoaDon_dao cthd_dao;
+	private  ChiTietHoaDon_dao cthd_dao;
 	private final Date gioHienTai;
 	private final Date phutHienTai;
 	private double soGioHat;
 	private double soPhutHat;
-	private final KhachHang_dao kh_dao;
-	private final PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
+	private  KhachHang_dao kh_dao;
+	private  PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
 	private PhieuDatPhong pdp_of_room;
-	private final TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
-	private final HoaDonDatPhong_dao hd_dao = new HoaDonDatPhong_dao();
+	private  TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
+	private  HoaDonDatPhong_dao hd_dao = new HoaDonDatPhong_dao();
 	private GD_TrangChu trangChu;
-	private final TempThanhToan_dao tempTT_dao;
-	private final Phong_dao ph_dao;
+	private  TempThanhToan_dao tempTT_dao;
+	private  Phong_dao ph_dao;
 	@SuppressWarnings("unused")
 	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2;
 	private final String maP;
-	private final TempPhongBiChuyen_dao tempChuyen_dao;
+	private  TempPhongBiChuyen_dao tempChuyen_dao;
 	private final GD_DatPhong datPhong;
 
 	public Dialog_PhongDangSD(String maPhong, GD_DatPhong datPhong) {
+		try {
+			 //  ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			p_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			lp_dao = (LoaiPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/loaiphong");
+			phieuDatPhong_dao = (PhieuDatPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/phieudatphong");
+			cthd_dao = (ChiTietHoaDon_dao) Naming.lookup("rmi://192.168.0.107:7878/chitiethoadon");
+			kh_dao = (KhachHang_dao) Naming.lookup("rmi://192.168.0.107:7878/khachhang");
+			tempTT_dao = (TempThanhToan_dao) Naming.lookup("rmi://192.168.0.107:7878/tempthanhtoan");
+			ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		// kích thước giao diện
 		maP = maPhong;
 		this.datPhong = datPhong;

@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.rmi.Naming;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,8 +39,8 @@ import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.SqlDateModel;
 
-import app.Dialog_User;
-import app.RoundedBorder;
+import dao.DangNhap_dao;
+import dao.NhanVien_dao;
 import dao.SanPham_dao;
 import entity.SanPham;
 import utils.DateLabelFormatter;
@@ -71,7 +72,7 @@ public class GD_SanPham extends JPanel implements ActionListener, MouseListener 
 	private final Properties p;
 	private final JDatePickerImpl datePicker;
 	private final JComboBox<String> cbDonViTinh;
-	private final SanPham_dao sp_dao;
+	private  SanPham_dao sp_dao;
 	private XSSFWorkbook wordbook;
 	private final JTextField txtDonGia;
 	private final JTextField txtTen;
@@ -84,7 +85,14 @@ public class GD_SanPham extends JPanel implements ActionListener, MouseListener 
 	private final JButton btnUser;
 	private final Dialog_User dialog_User= new Dialog_User();
 	public GD_SanPham() {
-		sp_dao = new SanPham_dao();
+		try {
+			 //  ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+		sp_dao = (SanPham_dao) Naming.lookup("rmi://192.168.0.107:7878/sanpham");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	//	sp_dao = new SanPham_dao();
 		setBackground(new Color(242, 240, 255));
 		setLayout(null);
 

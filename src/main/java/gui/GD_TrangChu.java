@@ -21,18 +21,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.border.CompoundBorder;
 
-import app.DataManager;
-import app.Dialog_User;
-import app.GD_DanhSachPhong;
-import app.GD_DatPhong;
-import app.GD_HoaDon;
-import app.GD_KhachHang;
-import app.GD_KhuyenMai;
-import app.GD_NhanVien;
-import app.GD_SanPham;
-import app.GD_ThongKe;
-import app.GD_TrangChu;
-import app.GD_TroGiup;
 import dao.TempDatPhong_dao;
 
 import javax.swing.AbstractAction;
@@ -44,6 +32,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.rmi.Naming;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.awt.event.ActionEvent;
@@ -77,15 +66,23 @@ public class GD_TrangChu extends JFrame implements ActionListener, WindowListene
 	private final GD_KhuyenMai khuyenMai = new GD_KhuyenMai();
 	private final GD_TroGiup troGiup = new GD_TroGiup(this);
 	private JPanel panel_chuaTime;
-	private final TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
+	private  TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
 	private Dialog_User dialog_User= new Dialog_User();
 
 	public GD_TrangChu() {
 		super("Karaoke 4T");
+		try {
+			 //  ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			tmp_dao = (TempDatPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/tempdatphong");
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		datPhong = new GD_DatPhong(this);
 		ImageIcon icon = new ImageIcon("icon\\icon_Karaoke3.jpg");
 		this.setIconImage(icon.getImage());
 		initialize();
+		
 	}
 
 	public static void main(String[] args) {

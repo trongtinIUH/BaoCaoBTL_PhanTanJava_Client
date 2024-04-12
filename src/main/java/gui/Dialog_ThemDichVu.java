@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.rmi.Naming;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -26,11 +27,17 @@ import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-import app.DataManager;
 import dao.ChiTietDichVu_dao;
 import dao.ChiTietHoaDon_dao;
+import dao.HoaDonDatPhong_dao;
+import dao.KhachHang_dao;
+import dao.KhuyenMai_dao;
+import dao.LoaiPhong_dao;
+import dao.NhanVien_dao;
 import dao.Phong_dao;
 import dao.SanPham_dao;
+import dao.TempPhongBiChuyen_dao;
+import dao.TempThanhToan_dao;
 import entity.ChiTietDichVu;
 import entity.ChiTietHoaDon;
 import entity.Enum_TrangThai;
@@ -84,17 +91,28 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 	private final DecimalFormat df;
 	private final String ma;
 	private double tongTien;
-	private final Phong_dao p_dao;
-	private final ChiTietDichVu_dao ctdv_dao;
+	private  Phong_dao p_dao;
+	private  ChiTietDichVu_dao ctdv_dao;
 	@SuppressWarnings("unused")
 	private String maHoaDon = "";
-	private final ChiTietHoaDon_dao cthd_dao;
+	private  ChiTietHoaDon_dao cthd_dao;
 
 	private final JLabel lblPhong1;
 
 	public Dialog_ThemDichVu(String customer, String employee, String maPhong) {
+		try {
+			 //  ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			cthd_dao = (ChiTietHoaDon_dao) Naming.lookup("rmi://192.168.0.107:7878/chitiethoadon");
+			ctdv_dao = (ChiTietDichVu_dao) Naming.lookup("rmi://192.168.0.107:7878/chitietdichvu");
+			sp_dao = (SanPham_dao) Naming.lookup("rmi://192.168.0.107:7878/sanpham");
+			p_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		this.ma = maPhong;
-		cthd_dao = new ChiTietHoaDon_dao();
+		//cthd_dao = new ChiTietHoaDon_dao();
 		df = new DecimalFormat("#,###,### VNĐ");
 		getContentPane().setBackground(Color.WHITE);
 		setSize(800, 500);
@@ -102,9 +120,9 @@ public class Dialog_ThemDichVu extends JDialog implements ActionListener, MouseL
 		getContentPane().setLayout(null);
 		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
 		this.setIconImage(icon.getImage());
-		p_dao = new Phong_dao();
-		ctdv_dao = new ChiTietDichVu_dao();
-		sp_dao = new SanPham_dao();
+	// = new Phong_dao();
+	//	ctdv_dao = new ChiTietDichVu_dao();
+	//	sp_dao = new SanPham_dao();
 
 		// panel chứa tiêu đề--------------------------------------
 		panel = new JPanel();

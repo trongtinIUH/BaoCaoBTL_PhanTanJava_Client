@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.rmi.Naming;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,10 +37,13 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import app.DataManager;
-import app.Dialog_User;
-import app.RoundedBorder;
+import dao.ChiTietDichVu_dao;
+import dao.ChiTietHoaDon_dao;
+import dao.HoaDonDatPhong_dao;
 import dao.KhachHang_dao;
+import dao.KhuyenMai_dao;
+import dao.Phong_dao;
+import dao.SanPham_dao;
 import entity.KhachHang;
 
 public class GD_KhachHang extends JPanel implements ActionListener, MouseListener {
@@ -69,7 +73,7 @@ public class GD_KhachHang extends JPanel implements ActionListener, MouseListene
 	private final JRadioButton radNu;
 	private final JButton btnThem;
 	private final JLabel lblGioiTinh;
-	private final KhachHang_dao kh_dao;
+	private  KhachHang_dao kh_dao;
 	private final JTextField txtHoTen;
 	private final JTextField txtMa;
 	private XSSFWorkbook wordbook;
@@ -80,10 +84,19 @@ public class GD_KhachHang extends JPanel implements ActionListener, MouseListene
 	private final Dialog_User dialog_User = new Dialog_User();
 
 	public GD_KhachHang() {
+		try {
+			 //  ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			kh_dao = (KhachHang_dao) Naming.lookup("rmi://192.168.0.107:7878/kh");
+			
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		setBackground(new Color(242, 240, 255));
 		setLayout(null);
 		font = new Font("Arial", Font.BOLD, 18);
-		kh_dao = new KhachHang_dao();
+		//kh_dao = new KhachHang_dao();
 
 		JPanel pnNorth = new JPanel();
 		pnNorth.setBounds(0, 0, 1078, 60);

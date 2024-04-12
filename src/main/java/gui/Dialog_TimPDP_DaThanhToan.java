@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.Naming;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -22,6 +23,7 @@ import dao.KhuyenMai_dao;
 import dao.LoaiPhong_dao;
 import dao.PhieuDatPhong_dao;
 import dao.Phong_dao;
+import dao.SanPham_dao;
 import entity.ChiTietHoaDon;
 import entity.HoaDonDatPhong;
 import entity.KhachHang;
@@ -50,31 +52,48 @@ public class Dialog_TimPDP_DaThanhToan extends JDialog implements ActionListener
     private final JLabel lblTenKH_1;
 
 
-	private final Phong_dao p_dao = new Phong_dao();
-	private final LoaiPhong_dao lp_dao = new LoaiPhong_dao();
+	private  Phong_dao p_dao = new Phong_dao();
+	private  LoaiPhong_dao lp_dao = new LoaiPhong_dao();
 	private Phong p;
 	private LoaiPhong lp;
-	private final PhieuDatPhong_dao phieuDatPhong_dao;
-	private final Phong_dao phong_dao= new Phong_dao();
-	private final ChiTietHoaDon_dao cthd_dao;
+	private  PhieuDatPhong_dao phieuDatPhong_dao;
+	private  Phong_dao phong_dao= new Phong_dao();
+	private  ChiTietHoaDon_dao cthd_dao;
 	private final Date gioHienTai;
 	private final Date phutHienTai;
 	private double soGioHat;
 	private double soPhutHat;
-	private final KhachHang_dao kh_dao;
+	private  KhachHang_dao kh_dao;
 	private final JLabel lbl_ngayThanhToan;
 	private final JLabel lbl_TongTien;
 		
 	private HoaDonDatPhong hd= new HoaDonDatPhong();
-	private final HoaDonDatPhong_dao hd_dao= new HoaDonDatPhong_dao();
+	private  HoaDonDatPhong_dao hd_dao= new HoaDonDatPhong_dao();
 	private final JLabel lblngaytt;
 	private final JLabel lbl_Tongtien_1;
-	private final KhuyenMai_dao khuyenmai_dao= new KhuyenMai_dao();
+	private  KhuyenMai_dao khuyenmai_dao= new KhuyenMai_dao();
 
-	private final ChiTietDichVu_dao chitietdichvu_dao= new ChiTietDichVu_dao();
+	private  ChiTietDichVu_dao chitietdichvu_dao= new ChiTietDichVu_dao();
 	
 
 	public Dialog_TimPDP_DaThanhToan(String maPhong, String maPDP) {
+		try {
+			 //  ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			cthd_dao = (ChiTietHoaDon_dao) Naming.lookup("rmi://192.168.0.107:7878/chitiethoadon");
+			p_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			lp_dao = (LoaiPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/loaiphong");
+			phieuDatPhong_dao = (PhieuDatPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/phieudatphong");
+			kh_dao = (KhachHang_dao) Naming.lookup("rmi://192.168.0.107:7878/khachhang");
+			hd_dao = (HoaDonDatPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/hoadondatphong");
+			khuyenmai_dao = (KhuyenMai_dao) Naming.lookup("rmi://192.168.0.107:7878/khuyenmai");
+			chitietdichvu_dao = (ChiTietDichVu_dao) Naming.lookup("rmi://192.168.0.107:7878/chitietdichvu");
+			
+			
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		//kích thước giao diện
 		getContentPane().setBackground(Color.WHITE);
 		setSize(335, 500);
@@ -83,9 +102,9 @@ public class Dialog_TimPDP_DaThanhToan extends JDialog implements ActionListener
 		ImageIcon icon = new ImageIcon("icon\\icon_white.png");
 	    this.setIconImage(icon.getImage());
 	    
-		phieuDatPhong_dao = new PhieuDatPhong_dao();
-		cthd_dao = new ChiTietHoaDon_dao();
-		kh_dao = new KhachHang_dao();
+	//	phieuDatPhong_dao = new PhieuDatPhong_dao();
+	//	cthd_dao = new ChiTietHoaDon_dao();
+	//	kh_dao = new KhachHang_dao();
 				
 		//các lbl góc trái-----------------------------------------------------------------------
 		lblPhong = new JLabel("Phòng:");

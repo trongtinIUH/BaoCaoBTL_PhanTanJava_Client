@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.rmi.Naming;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -40,16 +41,11 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import app.CenterRenderer;
-import app.DataManager;
-import app.Dialog_DatPhongTrong_2;
-import app.Dialog_PhongCho;
-import app.Dialog_PhongDangSD;
-import app.Dialog_TimPDP_DaThanhToan;
-import app.GD_TrangChu;
-import app.RoundedBorder;
+import dao.ChiTietDichVu_dao;
+import dao.ChiTietHoaDon_dao;
 import dao.HoaDonDatPhong_dao;
 import dao.KhachHang_dao;
+import dao.KhuyenMai_dao;
 import dao.LoaiPhong_dao;
 import dao.NhanVien_dao;
 import dao.PhieuDatPhong_dao;
@@ -77,7 +73,7 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
     private final JLabel lblTrangThai;
     private final JLabel lblMaPDP;
     private final JLabel lblSDTKhach;
-	private final Phong_dao p_dao = new Phong_dao();
+	private  Phong_dao p_dao = new Phong_dao();
 	private final JComboBox<String> comboBox_TrangThai;
     private final JComboBox<String> comboBox_TrangThai_1;
 	private final JButton btnTimKiem;
@@ -97,28 +93,41 @@ public class Dialog_TimPhieuDatPhong extends JDialog implements ActionListener, 
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private final JTextField txtLoaiTimKiem;
-	private final PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
-    private final KhachHang_dao kh_dao = new KhachHang_dao();
+	private  JTextField txtLoaiTimKiem;
+	private  PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
+    private  KhachHang_dao kh_dao = new KhachHang_dao();
 	private KhachHang kh = new KhachHang();
 	private NhanVien nv = new NhanVien();
-	private final NhanVien_dao nv_dao = new NhanVien_dao();
+	private  NhanVien_dao nv_dao = new NhanVien_dao();
 
 	private PhieuDatPhong pdp = new PhieuDatPhong();
 	private HoaDonDatPhong hd = new HoaDonDatPhong();
-	private final HoaDonDatPhong_dao hd_dao = new HoaDonDatPhong_dao();
+	private  HoaDonDatPhong_dao hd_dao = new HoaDonDatPhong_dao();
 	private Phong p = new Phong();
 	private Dialog_PhongCho dialog_PhongCho;
 	private XSSFWorkbook wordbook;
-	private final TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
+	private  TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
 	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2;
 	private GD_TrangChu trangChu;
-	private final LoaiPhong_dao lp_dao = new LoaiPhong_dao();
+	private  LoaiPhong_dao lp_dao = new LoaiPhong_dao();
 	private LoaiPhong lp;
 	private Dialog_PhongDangSD dialog_PhongDangSD;
 	private Dialog_TimPDP_DaThanhToan dialog_TimPDP_DaThanhToan;
 
 	public Dialog_TimPhieuDatPhong() {
+		try {
+			 //  ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			p_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			lp_dao = (LoaiPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/loaiphong");
+			kh_dao = (KhachHang_dao) Naming.lookup("rmi://192.168.0.107:7878/khachhang");
+			hd_dao = (HoaDonDatPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/hoadondatphong");
+		    nv_dao = (NhanVien_dao) Naming.lookup("rmi://192.168.0.107:7878/nhanvien");
+		    pdp_dao = (PhieuDatPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/phieudatphong");
+		    tmp_dao = (TempDatPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/tempdatphong");
+		   
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		// kích thước
 		getContentPane().setBackground(Color.WHITE);
 		setSize(900, 450);

@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.Naming;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -14,10 +15,11 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import dao.DangNhap_dao;
+import dao.Phong_dao;
 
 import javax.swing.SwingConstants;
 
-import app.RoundedBorder;
+
 
 public class Dialog_DoiMatKhau extends JDialog implements ActionListener {
 	
@@ -35,9 +37,15 @@ public class Dialog_DoiMatKhau extends JDialog implements ActionListener {
 	private final JLabel lblTitle;
 	private final JButton btnHuy;
     private final JButton btnXacNhan;
-	private final DangNhap_dao dangNhap_dao = new DangNhap_dao();
+	private  DangNhap_dao dangNhap_dao = new DangNhap_dao();
 	private String manv="";
 	public  Dialog_DoiMatKhau(String ma) {
+		try {
+			 //  ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			dangNhap_dao= (DangNhap_dao) Naming.lookup("rmi://192.168.0.107:7878/dangnhap");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		setTitle("Đổi Mật Khẩu");
 		setSize(400, 300);
 		setLocationRelativeTo(null);

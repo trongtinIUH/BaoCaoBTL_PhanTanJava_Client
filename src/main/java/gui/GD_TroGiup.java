@@ -17,11 +17,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
-import app.Dialog_User;
-import app.GD_TrangChu;
-import app.GD_TrangDangNhap;
-import app.GD_TroGiup;
-import app.Node;
+
 
 public class GD_TroGiup extends JPanel implements MouseListener{
 	/**

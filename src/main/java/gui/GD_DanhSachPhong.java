@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.rmi.Naming;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -30,13 +31,14 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import app.Dialog_User;
-import app.RoundedBorder;
+
 import dao.Phong_dao;
 import entity.Enum_TrangThai;
 import entity.LoaiPhong;
 import entity.Phong;
+import dao.DangNhap_dao;
 import dao.LoaiPhong_dao;
+import dao.NhanVien_dao;
 
 public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseListener {
 	/**
@@ -65,7 +67,7 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 	private final JButton btnSua;
 	private final JButton btnLamMoi;
 	private Phong_dao p_dao;
-	private final LoaiPhong_dao lp_dao = new LoaiPhong_dao();
+	private  LoaiPhong_dao lp_dao = new LoaiPhong_dao();
 	private XSSFWorkbook wordbook;
 	private final JComboBox<String> cbLau;
 	private final JTextField txtMa;
@@ -75,6 +77,14 @@ public class GD_DanhSachPhong extends JPanel implements ActionListener, MouseLis
 	private final Dialog_User dialog_user = new Dialog_User();
 
 	public GD_DanhSachPhong() {
+		try {
+			 //  ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			p_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			lp_dao = (LoaiPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/lp");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		setBackground(new Color(246, 245, 255));
 		setLayout(null);
 

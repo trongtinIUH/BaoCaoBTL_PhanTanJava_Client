@@ -3,7 +3,6 @@ package gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import app.Node;
 
 public class Node {
     private final String interfaceName;

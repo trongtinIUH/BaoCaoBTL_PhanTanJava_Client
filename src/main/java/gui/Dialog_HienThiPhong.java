@@ -3,6 +3,7 @@ package gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.rmi.Naming;
 
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -10,10 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
-import app.DataManager;
-import app.Dialog_DatPhongCho;
-import app.Dialog_DatPhongTrong_2;
-import app.GD_TrangChu;
+
 
 import java.awt.Font;
 import java.awt.Color;
@@ -31,6 +29,7 @@ import dao.TempDatPhong_dao;
 import entity.LoaiPhong;
 import entity.Phong;
 import utils.TempDatPhong;
+import dao.DangNhap_dao;
 import dao.LoaiPhong_dao;
 
 public class Dialog_HienThiPhong extends JDialog implements ActionListener {
@@ -51,8 +50,8 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
     private final JLabel lblgia_1;
     private final JLabel lblPhong_1;
 	private final JButton btnDatPhong;
-	private final Phong_dao p_dao = new Phong_dao();
-	private final LoaiPhong_dao lp_dao = new LoaiPhong_dao();
+	private  Phong_dao p_dao = new Phong_dao();
+	private  LoaiPhong_dao lp_dao = new LoaiPhong_dao();
 
 	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2;
 	private Dialog_DatPhongCho dialog_DatPhongCho;
@@ -60,10 +59,19 @@ public class Dialog_HienThiPhong extends JDialog implements ActionListener {
 	private final LoaiPhong lp;
 	private final JLabel lblSoNguoi;
 	private final JTextField txtSoNguoi;
-	private final TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
+	private  TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
 	private final JButton btn_DatPhongCho;
 
 	public Dialog_HienThiPhong(String maPhong, GD_TrangChu trangChu) {
+		try {
+			 //  ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			p_dao= (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			lp_dao= (LoaiPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/loaiphong");
+			tmp_dao= (TempDatPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/temp");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		this.trangChu = trangChu;
 		// kích thước
 		// dialog--------------*****************************************************************

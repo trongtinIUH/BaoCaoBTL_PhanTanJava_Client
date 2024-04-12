@@ -6,6 +6,7 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.rmi.Naming;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -27,11 +28,6 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 
-import app.DataManager;
-import app.Dialog_DatPhongTrong_2;
-import app.Dialog_HienThiPhong;
-import app.GD_TrangChu;
-import app.RoundedBorder;
 import dao.KhachHang_dao;
 import dao.LoaiPhong_dao;
 import dao.PhieuDatPhong_dao;
@@ -61,10 +57,10 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 	private final JButton btnNhanPhong;
     private final JButton btn_HuyPhong;
 
-	private final Phong_dao p_dao = new Phong_dao();
-	private final LoaiPhong_dao lp_dao = new LoaiPhong_dao();
-	private final PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
-	private final KhachHang_dao kh_dao = new KhachHang_dao();
+	private  Phong_dao p_dao = new Phong_dao();
+	private  LoaiPhong_dao lp_dao = new LoaiPhong_dao();
+	private  PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
+	private  KhachHang_dao kh_dao = new KhachHang_dao();
 	private Phong p;
 	private LoaiPhong lp;
 	private PhieuDatPhong pdp;
@@ -83,7 +79,7 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 	private final JLabel lbl_KhachHang;
 	private final JLabel lbl_KhachHang_1;
 	private final JLabel lbl_SoNguoi_1;
-	private final TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
+	private  TempDatPhong_dao tmp_dao = new TempDatPhong_dao();
 
 	private LocalDateTime ngayGioDatPhong;
 	private LocalDateTime ngayGioNhanPhong;
@@ -97,6 +93,16 @@ public class Dialog_PhongCho extends JDialog implements ActionListener {
 	private final JButton btnDatPhong;
 
 	public Dialog_PhongCho(String maPhong, GD_TrangChu trangChu) {
+		try {
+			 //  ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			p_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			lp_dao = (LoaiPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/loaiphong");
+			pdp_dao = (PhieuDatPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/phieudatphong");
+			kh_dao = (KhachHang_dao) Naming.lookup("rmi://192.168.0.107:7878/khachhang");
+			tmp_dao = (TempDatPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/tempdatphong");	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		this.trangChu = trangChu;
 		// kích thước giao diện
 		getContentPane().setBackground(Color.WHITE);

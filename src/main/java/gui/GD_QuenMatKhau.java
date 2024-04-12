@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.Naming;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,10 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import app.GD_QuenMatKhau;
-import app.GD_TrangDangNhap;
-import app.RoundedBorder;
+
 import dao.DangNhap_dao;
+import dao.NhanVien_dao;
 
 public class GD_QuenMatKhau extends JFrame implements ActionListener {
 	
@@ -39,7 +39,7 @@ public class GD_QuenMatKhau extends JFrame implements ActionListener {
 	private final JButton btnHuy;
     private final JButton btnXacNhan;
     private final JButton btnOTP;
-	private final DangNhap_dao dangNhap_dao = new DangNhap_dao();
+	private  DangNhap_dao dangNhap_dao = new DangNhap_dao();
 	
 	// Thay thế bằng Account SID và Auth Token của bạn
     public static final String ACCOUNT_SID = "AC7f55b2559cf6d868c6c92f6733eafb65";
@@ -47,6 +47,13 @@ public class GD_QuenMatKhau extends JFrame implements ActionListener {
 
 
 	public  GD_QuenMatKhau() {
+		try {
+			 //  ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+		dangNhap_dao = (DangNhap_dao) Naming.lookup("rmi://192.168.0.107:7878/dangnhap");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		setTitle("Quên Mật Khẩu");
 		setSize(600, 350);
 		setLocationRelativeTo(null);

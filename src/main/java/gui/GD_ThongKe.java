@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.Naming;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -35,9 +36,6 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 
-import app.DataManager;
-import app.Dialog_User;
-import app.RoundedBorder;
 import dao.ChiTietDichVu_dao;
 import dao.ChiTietHoaDon_dao;
 import dao.HoaDonDatPhong_dao;
@@ -45,6 +43,7 @@ import dao.KhachHang_dao;
 import dao.KhuyenMai_dao;
 import dao.NhanVien_dao;
 import dao.Phong_dao;
+import dao.SanPham_dao;
 import dao.ThongKe_dao;
 import entity.HoaDonDatPhong;
 import utils.CurveLineChart;
@@ -75,12 +74,12 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 	lblTongHoaDon, lblDoanhThuPhongThuong, lblDoanhThuPhongVIP, lblTongSoGioHat, lblDoanhThuDichVu, lblYearStart, lblYearEnd;
 	JComboBox<String> cbThongKe, cbDate, cbYearStart, cbYearEnd, cbYear, cbMonth, cbMonthKH, cbYearKH;
 	JButton btnThongKe, btnLamMoi, btnProfile;
-	private final HoaDonDatPhong_dao hoadon_dao;
-	private final KhachHang_dao khachhang_dao;
-	private final Phong_dao phong_dao;
-	private final ChiTietDichVu_dao chitietdichvu_dao;
-	private final ChiTietHoaDon_dao chitiethoadon_dao;
-	private final KhuyenMai_dao khuyenmai_dao;
+	private  HoaDonDatPhong_dao hoadon_dao;
+	private  KhachHang_dao khachhang_dao;
+	private  Phong_dao phong_dao;
+	private  ChiTietDichVu_dao chitietdichvu_dao;
+	private  ChiTietHoaDon_dao chitiethoadon_dao;
+	private  KhuyenMai_dao khuyenmai_dao;
 	private final JPanel pnTable;
     private final JPanel pnContent;
     private final JPanel pnPieChart;
@@ -89,8 +88,8 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 	private final DecimalFormat df;
 	private final PieChart pieChart;
 	private final CurveLineChart lineChart;
-	private final ThongKe_dao thongke_dao;
-	private final NhanVien_dao nhanvien_dao;
+	private  ThongKe_dao thongke_dao;
+	private  NhanVien_dao nhanvien_dao;
 	private final Dialog_User dialog_user;
 
 	private final LocalDateTime now;
@@ -101,18 +100,36 @@ public class GD_ThongKe extends JPanel implements ActionListener{
 	private JFreeChart barChart;
 	private final ChartPanel pnBarChart;
 	public GD_ThongKe() {
+		
+		try {
+			 //  ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			hoadon_dao= (HoaDonDatPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/hoadon");
+			khachhang_dao = (KhachHang_dao) Naming.lookup("rmi://192.168.0.107:7878/khachhang");
+			phong_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			chitietdichvu_dao = (ChiTietDichVu_dao) Naming.lookup("rmi://192.168.0.107:7878/chitietdichvu");
+			khuyenmai_dao = (KhuyenMai_dao) Naming.lookup("rmi://192.168.0.107:7878/khuyenmai");
+			chitiethoadon_dao = (ChiTietHoaDon_dao) Naming.lookup("rmi://192.168.0.107:7878/chitiethoadon");
+			thongke_dao = (ThongKe_dao) Naming.lookup("rmi://192.168.0.107:7878/thongke");
+			nhanvien_dao = (NhanVien_dao) Naming.lookup("rmi://192.168.0.107:7878/nhanvien");
+			
+			
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		dialog_user = new Dialog_User();
 		df = new DecimalFormat("#,###,### VNĐ");
 		setLayout(null);
 		setBackground(Color.decode("#FAFAFF"));
-		hoadon_dao = new HoaDonDatPhong_dao();
-		khachhang_dao = new KhachHang_dao();
-		phong_dao = new Phong_dao();
-		chitietdichvu_dao = new ChiTietDichVu_dao();
-		khuyenmai_dao = new KhuyenMai_dao();
-		chitiethoadon_dao = new ChiTietHoaDon_dao();
-		thongke_dao = new ThongKe_dao();
-		nhanvien_dao = new NhanVien_dao();
+		//hoadon_dao = new HoaDonDatPhong_dao();
+	//	khachhang_dao = new KhachHang_dao();
+		//phong_dao = new Phong_dao();
+	//	chitietdichvu_dao = new ChiTietDichVu_dao();
+	//	khuyenmai_dao = new KhuyenMai_dao();
+	//	chitiethoadon_dao = new ChiTietHoaDon_dao();
+		//thongke_dao = new ThongKe_dao();
+		//nhanvien_dao = new NhanVien_dao();
 		JPanel pnNorth = new JPanel();
 		pnNorth.setBackground(Color.decode("#B5E6FB"));
 		pnNorth.setBounds(0, 0, 1080, 60);

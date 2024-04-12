@@ -6,18 +6,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
-import app.DataManager;
-import app.Dialog_DatPhongCho;
-import app.Dialog_DatPhongTrong_2;
-import app.Dialog_HienThiPhong;
-import app.Dialog_HienThiPhongSuaChua;
-import app.Dialog_PhongCho;
-import app.Dialog_PhongDangSD;
-import app.Dialog_ThanhToan;
-import app.Dialog_TimPhieuDatPhong;
-import app.Dialog_User;
-import app.GD_TrangChu;
-import app.RoundedBorder;
+
 import connectDB.ConnectDB;
 
 import javax.swing.JLabel;
@@ -33,6 +22,7 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
+import java.rmi.Naming;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -92,7 +82,7 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 	private Dialog_HienThiPhongSuaChua dialog_htPhongSuaChua;
 	private Dialog_TimPhieuDatPhong dialog_TimPhieuDatPhong;
 	private final JButton btnBackToBook;
-	private final TempDatPhong_dao tmp_dao;
+	private  TempDatPhong_dao tmp_dao;
 	private Dialog_DatPhongTrong_2 dialog_DatPhongTrong_2;
 	private int sizeDSTmp;
 	Font font2 = new Font("Arial", Font.BOLD, 18); // thuộc tính
@@ -106,13 +96,13 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 	private final ImageIcon resizedIcon_phongchovip;
 	private final ImageIcon resizedIcon_phongsuavip;
 	private final JButton btnBackThanhToan;
-	private final TempThanhToan_dao tempTT_dao;
+	private  TempThanhToan_dao tempTT_dao;
 	private int sizeDSTemp_TT;
 	private Dialog_ThanhToan dialog_ThanhToan;
 	private final JButton btnBackHuyThanhToan;
-	private final PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
+	private  PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
 	private KhachHang kh= new KhachHang();
-	private final KhachHang_dao kh_dao= new KhachHang_dao();
+	private  KhachHang_dao kh_dao= new KhachHang_dao();
 	Timer timerChayThongBao;
 	private final JButton btnBackPhongCho;
 
@@ -121,9 +111,21 @@ public class GD_DatPhong extends JPanel implements ActionListener {
 	 */
 
 	public GD_DatPhong(GD_TrangChu trangChu) {
-		p_dao = new Phong_dao();
-		tmp_dao = new TempDatPhong_dao();
-		tempTT_dao = new TempThanhToan_dao();
+		try {
+			 //  ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			p_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			lp_dao = (LoaiPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/lp");
+			tmp_dao = (TempDatPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/tmp");
+			tempTT_dao = (TempThanhToan_dao) Naming.lookup("rmi://192.168.0.107:7878/tempTT");
+			pdp_dao = (PhieuDatPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/pdp");
+			kh_dao = (KhachHang_dao) Naming.lookup("rmi://192.168.0.107:7878/kh");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		//p_dao = new Phong_dao();
+	//	tmp_dao = new TempDatPhong_dao();
+	//	tempTT_dao = new TempThanhToan_dao();
 		this.setSize(1080, 730);
 		this.trangChu = trangChu;
 		setLayout(null);

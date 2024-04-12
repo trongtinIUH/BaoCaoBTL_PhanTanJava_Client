@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
+import java.rmi.Naming;
 import java.sql.SQLException;
 
 import javax.swing.AbstractAction;
@@ -25,13 +26,10 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
-import app.DataManager;
-import app.GD_QuenMatKhau;
-import app.GD_TrangChu;
-import app.GD_TrangDangNhap;
-import app.RoundedBorder;
+
 import connectDB.ConnectDB;
 import dao.DangNhap_dao;
+import dao.TempDatPhong_dao;
 
 public class GD_TrangDangNhap extends JFrame  implements ActionListener{
 	private static final long serialVersionUID = 1L;
@@ -46,6 +44,16 @@ public class GD_TrangDangNhap extends JFrame  implements ActionListener{
 	private String username;
 
 	public GD_TrangDangNhap() {
+		
+		try {
+			 //  ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+		dangNhap_dao = (DangNhap_dao) Naming.lookup("rmi://192.168.0.107:7878/dangnhap");
+		
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		setTitle("Đăng Nhập KARAOKE 4T");
 		setSize(720, 400);
 		setLocationRelativeTo(null);

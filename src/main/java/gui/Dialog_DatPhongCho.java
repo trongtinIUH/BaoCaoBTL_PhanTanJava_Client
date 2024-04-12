@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.Naming;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -27,7 +28,21 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 
+import dao.ChiTietDichVu_dao;
+import dao.ChiTietHoaDon_dao;
+import dao.HoaDonDatPhong_dao;
 import dao.KhachHang_dao;
+import dao.LoaiPhong_dao;
+import dao.NhanVien_dao;
+import dao.PhieuDatPhong_dao;
+import dao.Phong_dao;
+import dao.TempPhongBiChuyen_dao;
+import entity.Enum_TrangThai;
+import entity.KhachHang;
+import entity.LoaiPhong;
+import entity.NhanVien;
+import entity.PhieuDatPhong;
+import entity.Phong;
 
 
 
@@ -72,8 +87,8 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 	private final JLabel lbl_NgayDatPhong;
 	private final JLabel lbl_NgayNhanPhong;
 
-	private final Phong_dao phong_dao = new Phong_dao();
-	private final PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
+	private  Phong_dao phong_dao = new Phong_dao();
+	private  PhieuDatPhong_dao pdp_dao = new PhieuDatPhong_dao();
 	private KhachHang kh = new KhachHang();
 	private Date ngayHienTai;
 	private Date date;
@@ -82,7 +97,15 @@ public class Dialog_DatPhongCho extends JDialog implements ActionListener {
 	private LocalDateTime ngay_GioNhanPhong;
 
 	public Dialog_DatPhongCho(String maPhong, Phong p, LoaiPhong lp, int songuoi, GD_TrangChu trangChu) {
-
+		 try {
+			 // ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			 khachHang_dao= (KhachHang_dao) Naming.lookup("rmi://192.168.0.107:7878/khachhang");
+			 phong_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			 pdp_dao = (PhieuDatPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/phieudatphong");
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+		    
 		// màn
 		// hình******************************************************************************
 		this.trangChu = trangChu;

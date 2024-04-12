@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.Naming;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -11,10 +12,14 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import app.Dialog_ThanhToan;
-import app.RoundedBorder;
+
 import dao.ChiTietDichVu_dao;
+import dao.KhachHang_dao;
+import dao.LoaiPhong_dao;
+import dao.PhieuDatPhong_dao;
+import dao.Phong_dao;
 import dao.SanPham_dao;
+import dao.TempDatPhong_dao;
 import entity.ChiTietDichVu;
 import entity.HoaDonDatPhong;
 import entity.Phong;
@@ -34,14 +39,21 @@ public class Dialog_TraSanPham extends JDialog implements ActionListener {
 	private final JTextField txtSLTra;
 	private final JButton btnDongY;
 	private final JButton btnHuy;
-	private final ChiTietDichVu_dao ctdv_dao;
-	private final SanPham_dao sp_dao;
+	private  ChiTietDichVu_dao ctdv_dao;
+	private  SanPham_dao sp_dao;
 	private final String tenSp;
 	private final String maHD;
 	private final Dialog_ThanhToan thanhToan;
 	private final String maPhong;
 
 	public Dialog_TraSanPham(int soLuong, String tenSp, String maHD, String maPhong, Dialog_ThanhToan thanhToan) {
+		try {
+			 //  ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			ctdv_dao= (ChiTietDichVu_dao) Naming.lookup("rmi://192.168.0.107:7878/ctdv");
+			sp_dao = (SanPham_dao) Naming.lookup("rmi://192.168.0.107:7878/sp");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		getContentPane().setBackground(Color.WHITE);
 		setSize(300, 180);
 		setLocationRelativeTo(null);

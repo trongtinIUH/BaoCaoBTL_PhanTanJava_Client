@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.rmi.Naming;
 
 import javax.swing.JDialog;
 import java.awt.Color;
@@ -22,11 +23,10 @@ import java.awt.Window;
 
 import javax.swing.UIManager;
 
-import app.DataManager;
-import app.Dialog_DoiMatKhau;
-import app.GD_TrangDangNhap;
+import dao.ChiTietDichVu_dao;
 import dao.DangNhap_dao;
 import dao.NhanVien_dao;
+import dao.SanPham_dao;
 import entity.NhanVien;
 
 public class Dialog_User extends JDialog implements ActionListener{
@@ -43,16 +43,23 @@ public class Dialog_User extends JDialog implements ActionListener{
 	private final JTextField txtQunL;
 	private final JLabel hinhNV;
 	private final JLabel lbl_nen;
-	private final NhanVien_dao nv_dao;
+	private  NhanVien_dao nv_dao;
 	private Dialog_DoiMatKhau Dialog_Doi_mk;
 	private String ma;
 	private final JLabel lbl_TrangThai_1;
 	@SuppressWarnings("unused")
-	private final DangNhap_dao dangNhap_dao= new DangNhap_dao();
+	private  DangNhap_dao dangNhap_dao= new DangNhap_dao();
 	private final String trangthaidangnhap;
     private String hinhanh_url;
 //	private GD_TrangDangNhap gd_dangNhap = new GD_TrangDangNhap(); 
 	public Dialog_User() {
+		try {
+			 //  ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			nv_dao = (NhanVien_dao) Naming.lookup("rmi://192.168.0.107:7878/nv");
+			dangNhap_dao = (DangNhap_dao) Naming.lookup("rmi://192.168.0.107:7878/dangnhap");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		setTitle("User");
 		setSize(400, 300);
 		setLocationRelativeTo(null);

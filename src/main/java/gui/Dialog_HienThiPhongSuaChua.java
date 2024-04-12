@@ -5,8 +5,10 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 
 import java.awt.Font;
+import java.rmi.Naming;
 import java.awt.Color;
 import dao.Phong_dao;
+import dao.TempDatPhong_dao;
 import entity.LoaiPhong;
 import entity.Phong;
 import dao.LoaiPhong_dao;
@@ -27,13 +29,21 @@ public class Dialog_HienThiPhongSuaChua extends JDialog {
     private final JLabel lbltrangthai_1;
     private final JLabel lblgia_1;
     private final JLabel lblPhong_1;
-	private final Phong_dao p_dao = new Phong_dao();
-	private final LoaiPhong_dao lp_dao = new LoaiPhong_dao();
+	private  Phong_dao p_dao = new Phong_dao();
+	private  LoaiPhong_dao lp_dao = new LoaiPhong_dao();
 
 	private final Phong p;
 	private final LoaiPhong lp;
 
 	public Dialog_HienThiPhongSuaChua(String maPhong) {
+		try {
+			 //  ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			p_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			lp_dao = (LoaiPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/loaiphong");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		// kích thước
 		// dialog--------------*****************************************************************
 		getContentPane().setBackground(Color.WHITE);

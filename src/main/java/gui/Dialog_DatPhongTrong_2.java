@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.rmi.Naming;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -51,9 +52,7 @@ import javax.swing.table.DefaultTableModel;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.components.TimePickerSettings;
 
-import app.DataManager;
-import app.Dialog_ThemDichVu;
-import app.GD_TrangChu;
+
 import dao.ChiTietDichVu_dao;
 import dao.ChiTietHoaDon_dao;
 import dao.HoaDonDatPhong_dao;
@@ -64,6 +63,7 @@ import dao.PhieuDatPhong_dao;
 import dao.Phong_dao;
 import dao.SanPham_dao;
 import dao.TempDatPhong_dao;
+import dao.TempPhongBiChuyen_dao;
 
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
@@ -94,11 +94,11 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
     private final JLabel lbl_TenKH_1;
 	private final JTextField txtSoNguoi;
 	private final JButton btn_DatThemPhong;
-	private final NhanVien_dao nv_dao;
+	private  NhanVien_dao nv_dao;
 	private NhanVien nv;
-	private final HoaDonDatPhong_dao hddp_dao;
-	private final ChiTietHoaDon_dao cthd_dao;
-	private final ChiTietDichVu_dao ctdv_dao;
+	private  HoaDonDatPhong_dao hddp_dao;
+	private  ChiTietHoaDon_dao cthd_dao;
+	private  ChiTietDichVu_dao ctdv_dao;
 
 	private final JTable tblThemPhongMoi;
     private final JTable tblDV;
@@ -117,19 +117,34 @@ public class Dialog_DatPhongTrong_2 extends JDialog implements ActionListener, M
 
 	private KhachHang_dao khachHang_dao;
 	private final JLabel lblTieuDe;
-	private final TempDatPhong_dao tmpDatPhong_dao;
-	private final Phong_dao p_dao;
-	private final LoaiPhong_dao lp_dao;
+	private  TempDatPhong_dao tmpDatPhong_dao;
+	private  Phong_dao p_dao;
+	private  LoaiPhong_dao lp_dao;
 	private final JLabel lbl_Loai;
 	private final JLabel lblMaPhong;
-	private final PhieuDatPhong_dao pdp_dao;
+	private  PhieuDatPhong_dao pdp_dao;
 	private Date ngayHienTai;
 	private Date date;
-	private final KhachHang_dao kh_dao;
+	private  KhachHang_dao kh_dao;
 	private final DecimalFormat df;
-	private final SanPham_dao sp_dao = new SanPham_dao();
+	private  SanPham_dao sp_dao = new SanPham_dao();
 
 	public Dialog_DatPhongTrong_2(String maPhong, Phong p, LoaiPhong lp, int soNguoi, GD_TrangChu trangChu) {
+		 try {
+	          //  ph_dao = (Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			 nv_dao=(NhanVien_dao) Naming.lookup("rmi://192.168.0.107:7878/nhanvien");
+			 hddp_dao=(HoaDonDatPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/hoadondatphong");
+			 cthd_dao=(ChiTietHoaDon_dao) Naming.lookup("rmi://192.168.0.107:7878/chitiethoadon");
+			 ctdv_dao=(ChiTietDichVu_dao) Naming.lookup("rmi://192.168.0.107:7878/chitietdichvu");
+			 tmpDatPhong_dao=(TempDatPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/tempdatphong");
+			 p_dao=(Phong_dao) Naming.lookup("rmi://192.168.0.107:7878/phong");
+			 lp_dao=(LoaiPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/loaiphong");
+			 pdp_dao=(PhieuDatPhong_dao) Naming.lookup("rmi://192.168.0.107:7878/phieudatphong");
+			 kh_dao=(KhachHang_dao) Naming.lookup("rmi://192.168.0.107:7878/khachhang");
+			 sp_dao=(SanPham_dao) Naming.lookup("rmi://192.168.0.107:7878/sanpham");
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 		df = new DecimalFormat("#,###,### VNĐ");
 		// màn
 		// hình******************************************************************************
